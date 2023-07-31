@@ -8,39 +8,69 @@ import { jsPDF } from 'jspdf';
 import * as ExcelJS from 'exceljs';
 import { Workbook } from 'exceljs';
 import { saveAs } from 'file-saver-es';
-import { ReportsService } from 'src/app/Services/Reports-Services/Employee Details Service/Employee-Details-reports.service';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { EmployeeSummaryReportsService } from 'src/app/Services/Reports-Services/Employee Summary Service/employee-summary-reports.service';
 @Component({
-  selector: 'app-lateness-reports',
-  templateUrl: './lateness-reports.component.html',
-  styleUrls: ['./lateness-reports.component.css']
+  
+ selector: 'app-lateness-reports',
+ templateUrl: './lateness-reports.component.html',
+ styleUrls: ['./lateness-reports.component.css']
 })
 export class LatenessReportsComponent implements OnInit {
 
-  public LatenessData: any;
-  // latenessData: Array<any> = [];
-  constructor(private service: ReportsService) { }
+ public DetailsData: any;
+  PeriodFrom: any;
+  PeriodTo: any;
+  DetailsForm: FormGroup;
 
-  ngOnInit(): void {
-   
-    this.getLatenessData();
+
+  constructor(private service: EmployeeSummaryReportsService, private formBuilder: FormBuilder) {
+    this.DetailsForm = this.formBuilder.group({
+      startDate: new FormControl('', [Validators.required]),
+      endDate: new FormControl('', [Validators.required])
+    }, { validator: this.dateLessThan('startDate', 'endDate') });
   }
 
-  //#region for getLatenessReportDetails
-  getLatenessData() {
-    debugger;
-    this.service.getLatenessReportDetails().subscribe(res => {
-debugger;
+  ngOnInit(): void {
+    this.getLatenessReport();
+  }
+
+  //#region  For Get Deduction Data
+  getLatenessReport() { 
+    
+
+    this.PeriodFrom = this.DetailsForm.value.startDate;
+    this.PeriodTo = this.DetailsForm.value.endDate;
+
+    this.service.getLatenessReportDetails(this.PeriodFrom, this.PeriodTo).subscribe(res => {
+      debugger;
       if (res.data != null) {
-        debugger;
-             this.LatenessData = res.data;
-            }
-          });
+        debugger
+        this.DetailsData = res.data;
+      }
+    });
   }
   //#endregion
 
-//#region For Export to PDF , XLSX, & CSV.
+  // #region For Date Validation
+  dateLessThan(from: string, to: string) {
+    return (group: FormGroup): { [key: string]: any } => {
+      let f = group.controls[from];
+      let t = group.controls[to];
+      if (f.value >= t.value) {
+        return {
+          dates: "Date from should be less than Period Form"
+        };
+      }
+      return {};
+    }
+  }
+//#endregion
+ 
+//#region Export to XLSX , PDF & CSV functionality
   onExporting(e: any) {
-    //#region Export to PDF
+
+    //#region xport to PDF
     if (e.format == "pdf") {
 
       const doc = new jsPDF();
@@ -52,13 +82,13 @@ debugger;
         topLeft: { x: 1, y: 15 },
 
       }).then(() => {
-        const header = 'Employee Lateness Details Report';
+        const header = 'Employee Lateness Report Details ';
         const pageWidth = doc.internal.pageSize.getWidth();
         doc.setFontSize(15);
         const headerWidth = doc.getTextDimensions(header).w;
         doc.text(header, (pageWidth - headerWidth) / 2, 20);
 
-        doc.save('Lateness_Details_Report.pdf');
+        doc.save('emp_Lateness_Report_Details.pdf');
       });
     }
     //#endregion
@@ -78,44 +108,38 @@ debugger;
         headerRow.height = 30;
         worksheet.mergeCells(2, 1, 2, 8);
 
-        headerRow.getCell(1).value = 'Employee Lateness Details Report';
+        headerRow.getCell(1).value = 'Employee Lateness Report Details';
         headerRow.getCell(1).font = { name: 'Segoe UI Light', size: 22 };
         headerRow.getCell(1).alignment = { horizontal: 'center' };
 
       }).then(() => {
         workbook.xlsx.writeBuffer().then((buffer) => {
-          saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'Lateness_Details_Report.xlsx');
+          saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'emp_Lateness-Reports.xlsx');
         });
       });
       e.cancel = true;
     }
     //#endregion
 
+
     //#region Export to CSV file
-
     else {
-
-      // const workbook = new Workbook();
       const workbook = new ExcelJS.Workbook();
-
       const worksheet = workbook.addWorksheet('Employees');
-      //  DevExpress.excelExporter.exportDataGrid({
       Csv({
         component: e.component,
         worksheet: worksheet,
         topLeftCell: { row: 4, column: 1 },
       }).then(() => {
+        // header
         const headerRow = worksheet.getRow(2);
         headerRow.height = 30;
         worksheet.mergeCells(2, 1, 2, 8);
-
-        headerRow.getCell(1).value = 'Employee Lateness Details Report';
+        headerRow.getCell(1).value = 'Employee Lateness Report Details';
         headerRow.getCell(1).font = { name: 'Segoe UI Light', size: 22 };
         headerRow.getCell(1).alignment = { horizontal: 'center' };
-
         workbook.csv.writeBuffer().then((buffer) => {
-
-          saveAs(new Blob([buffer], { type: "application/octet-stream" }), "Lateness_Details_Report.csv");
+          saveAs(new Blob([buffer], { type: "application/octet-stream" }), "emp_absenteeSummary_reports.csv");
         });
       });
 
@@ -123,5 +147,5 @@ debugger;
     }
     //#endregion
   }
-//#endregion
+  //#endregion
 }

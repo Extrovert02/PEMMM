@@ -1,34 +1,67 @@
-
 <app-sidebar></app-sidebar>
 <div class="page-wrapper">
 <div class="content container-fluid">
     <div class="row">
         <div class="col-md-12">
             <div class="page-head-box">
-                <h3>Lateness Summary Report</h3>
+                <h3>Lateness Report Summary  Report</h3>
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">
                             <a routerLink="/dashboard">Dashboard</a>
                         </li>
                         <li class="breadcrumb-item active" aria-current="page">
-                           Lateness Summary Report
+                            Lateness Report Summary  Report
                         </li>
-                    </ol>
+                    </ol> 
+
                 </nav>
             </div>
         </div>
     </div>
 
 <div class="container border-dark">
-    <div class="long-title">
-<dx-data-grid id="gridContainer" [dataSource]="latnessSummaryData" [allowColumnReordering]="true"
-[showBorders]="true" (onExporting)="onExporting($event)">
+    <div class="container">
+        <div >
+            <div>
+                <form [formGroup]="SummaryForm" (ngSubmit)="GetLatenessReportSummary()">
+                    <div>
+                        <label for="pform"> Form</label> <div>
+                            <input type="date" id="pform"  min="1900-01-01" max="2030-12-31"  formControlName="startDate" [ngClass]="{ 'is-invalid': SummaryForm.get('startDate')?.invalid &&
+                        (SummaryForm.get('startDate')?.dirty || SummaryForm.get('startDate')?.touched)}">
+                        <div class="invalid-feedback">
+                          <b> This field is required.</b>
+                        </div>
+                        </div>
+                        
+                    </div>
 
-<!-- <dxi-column [width]="200" caption="Sr. No" dataField="" cellTemplate=""></dxi-column> -->
-<dxi-column caption="Employee Id" dataField="employeeId"></dxi-column>
-<dxi-column caption="Employee Name" dataField="name"></dxi-column>
-<dxi-column caption="Minutes" dataField="minutes"></dxi-column>
+                    <div> 
+                        <label for="periodTo"> To</label>  
+                        <div>
+                            <input type="date" useValueAsDate  id="periodTo" min="1900-01-01" max="2030-12-31"  formControlName="endDate" [ngClass]="{'is-invalid': SummaryForm.get('endDate')?.invalid &&
+                                        (SummaryForm.get('endDate')?.dirty || SummaryForm.get('endDate')?.touched)}">
+                            <div class="invalid-feedback">
+                            <b> This field is required.</b>   
+                            </div>
+                        </div>
+                    </div>
+<br>
+
+                    <button type="submit" class="btn btn-primary" [disabled]="!SummaryForm.valid" >Lateness  Summary Report</button>
+                </form>
+            </div> <br> 
+        </div>
+    </div>
+    <div class="long-title">
+           
+
+<dx-data-grid id="gridContainer" [dataSource]="summaryData" [allowColumnReordering]="true"
+[showBorders]="true">
+  <!-- <dxi-column [width]="200" caption="Sr. No" dataField="" cellTemplate=""></dxi-column> -->
+  <dxi-column caption="Employee Id" dataField="employeeId"></dxi-column>
+  <dxi-column caption="Employee Name" dataField="name"></dxi-column>
+  <dxi-column caption="Minutes" dataField="minutes"></dxi-column>
 
 
 <dxo-selection mode="multiple"></dxo-selection>
@@ -43,9 +76,7 @@
                     <dxo-column-chooser    [enabled]="true"   mode="select">  </dxo-column-chooser>
                     
                     <dxo-grouping  [contextMenuEnabled]="true">  </dxo-grouping>
-
 </dx-data-grid>
     </div>
-</div>
 </div>
 </div>

@@ -53,20 +53,20 @@
 
 
                 <dx-data-grid id="gridContainer" [dataSource]="attendanceData" [allowColumnReordering]="true"
-                    [showBorders]="true" (onExporting)="onExporting($event)">
+                    [showBorders]="true" (onExporting)="onExporting($event)" >
 
                     <!-- <dxi-column [width]="200" caption="Sr. No" dataField="" cellTemplate=""></dxi-column> -->
                     <dxi-column caption="AttendanceDate" dataField="attendanceDate"></dxi-column>
                     <dxi-column caption="EmployeeId" dataField="employeeId"></dxi-column>
-                    <dxi-column caption="FirstName" dataField="employeeFirstName"></dxi-column>
+                    <dxi-column caption="EmployeeName" dataField="employeeFirstName"></dxi-column>
                     <dxi-column caption="LastName" dataField=""></dxi-column>
-                    <dxi-column caption="TimeIn" dataField="expectedTimeIn"></dxi-column>
-                    <dxi-column caption="TimeOut" dataField="expectedTimeOut"></dxi-column>
-                    <dxi-column caption="AttendanceStatus" dataField=""></dxi-column>
+                    <dxi-column caption="TimeIn" dataField="expectedTimeIn"  dataType="time" Format="{ type:HH:mm:ss}"></dxi-column>
+                    <dxi-column caption="TimeOut" dataField="expectedTimeOut" format="HH:mm"></dxi-column>
+                    <!-- <dxi-column caption="AttendanceStatus" dataField=""></dxi-column>
                     <dxi-column caption="ClockedIn" dataField=""></dxi-column>
                     <dxi-column caption="ClockedOut" dataField=""></dxi-column>
                     <dxi-column caption="TimeInAddress" dataField=""></dxi-column>
-                    <dxi-column caption="TimeOutAddress2" dataField=""></dxi-column>
+                    <dxi-column caption="TimeOutAddress2" dataField=""></dxi-column> -->
 
                     <dxo-selection mode="multiple"></dxo-selection>
                     <dxo-paging [pageSize]="10"></dxo-paging>

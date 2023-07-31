@@ -49,8 +49,15 @@ debugger;
   }
 
   //For Get LatenessReportSummary Data 
-  public GetLatenessReportSummary(): Observable<any> {
+  public GetLatenessReportSummary(PeriodFrom:any,PeriodTo:any): Observable<any> {
 
-    return this.http.get<any>(this.API_URL + "/api/GetLatenessReportSummary/" + this.token, this.requestOptions);
+    return this.http.get<any>(this.API_URL + "/api/GetLatenessReportSummary/" + this.token+'?PeriodFrom='+PeriodFrom +'&PeriodTo='+PeriodTo, this.requestOptions);
   } 
+
+  
+//For Get All LatenessReportDetails Data
+public getLatenessReportDetails(PeriodFrom:any,PeriodTo:any): Observable<any> {
+  debugger;
+      return this.http.get<any>(this.API_URL + "/api/GetLatenessReportDetails/" + this.token+'?PeriodFrom='+PeriodFrom +'&PeriodTo='+PeriodTo, this.requestOptions);
+    }
 }

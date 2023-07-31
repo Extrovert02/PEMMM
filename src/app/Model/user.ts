@@ -17,7 +17,7 @@ export interface Data {
     employeePasswordExpiresDate?: any;
     employeeName: string;
     activeYn: boolean;
-    employeeAddress1: string;
+    employeeAddress1: string; 
     employeeAddress2: string;
     employeeCity: string;
     employeeState: string;

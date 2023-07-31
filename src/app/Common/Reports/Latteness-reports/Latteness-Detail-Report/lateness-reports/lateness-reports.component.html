@@ -14,23 +14,54 @@
                             Lateness Details Report
                         </li>
                     </ol>
-                </nav>
+                </nav> 
             </div>
         </div>
     </div>
 
-        <div class="container border-dark">
-            <div class="long-title">
-                <dx-data-grid id="gridContainer" [dataSource]="LatenessData" [allowColumnReordering]="true"
+    <div class="long-title">
+        <div>
+            <form [formGroup]="DetailsForm" (ngSubmit)="getLatenessReport()">
+                <div>
+                    <label for="pform"> Form</label>
+                    <div>
+                        <input type="date" id="pform" min="1900-01-01" max="2030-12-31"
+                            formControlName="startDate" [ngClass]="{ 'is-invalid': DetailsForm.get('startDate')?.invalid &&
+            (DetailsForm.get('startDate')?.dirty || DetailsForm.get('startDate')?.touched)}">
+                        <div class="invalid-feedback">
+                            <b>This field is required.</b>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div>
+                    <label for="periodTo"> To</label>
+                    <div>
+                        <input type="date" useValueAsDate id="periodTo" min="1900-01-01" max="2030-12-31"
+                            formControlName="endDate" [ngClass]="{'is-invalid': DetailsForm.get('endDate')?.invalid &&
+                            (DetailsForm.get('endDate')?.dirty || DetailsForm.get('endDate')?.touched)}">
+                        <div class="invalid-feedback">
+                            <b>This field is required.</b>
+                        </div>
+                    </div>
+                </div>
+                <br>
+
+                <button type="submit" class="btn btn-primary" [disabled]="!DetailsForm.valid">Get   Lateness Details Report</button>
+               </form>
+            </div> <br>
+                </div>
+                <dx-data-grid id="gridContainer" [dataSource]="DetailsData" [allowColumnReordering]="true"
                     [showBorders]="true" (onExporting)="onExporting($event)">
 
-                    <!-- <dxi-column [width]="200" caption="Sr. No" dataField="" cellTemplate=""></dxi-column> -->
-                    <dxi-column caption="Employee Id" dataField="employeeId"></dxi-column>
-                    <dxi-column caption="Employee Name" dataField="name"></dxi-column>
-                    <dxi-column caption="FirstName" dataField="firstName"></dxi-column>
-                    <dxi-column caption="LastName" dataField="lastName"></dxi-column>
-                    <dxi-column caption="Date" dataField="date"></dxi-column>
-                    <dxi-column caption="Time In Minutes" dataField="timeInMinutes"></dxi-column>
+                        <!-- <dxi-column [width]="200" caption="Sr. No" dataField="" cellTemplate=""></dxi-column> -->
+                        <dxi-column caption="Employee Id" dataField="employeeId"></dxi-column>
+                        <dxi-column caption="Employee Name" dataField="name"></dxi-column>
+                        <!-- <dxi-column caption="FirstName" dataField="firstName"></dxi-column> -->
+                        <dxi-column caption="LastName" dataField="lastName"></dxi-column>
+                        <dxi-column caption="Date" dataField="date"></dxi-column>
+                        <dxi-column caption="Time In Minutes" dataField="timeInMinutes"></dxi-column>
 
                     <dxo-selection mode="multiple"></dxo-selection>
                     <dxo-paging [pageSize]="10"></dxo-paging>
@@ -47,5 +78,4 @@
                 </dx-data-grid>
             </div>
         </div>
-    </div>
-</div>
+ 

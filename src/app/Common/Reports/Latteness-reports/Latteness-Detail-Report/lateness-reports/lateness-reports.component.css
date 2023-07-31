@@ -1,0 +1,24 @@
+/* Validation */
+input.invalid.touched,
+select.invalid.touched{
+    border: 1px solid red;
+    box-shadow: inset 0 0 13 ;
+}
+ 
+/* .mat-form-field {
+    margin-right: 12px;
+  } */
+  .btn-primary{
+    background-color: #4005f2;
+    border-radius: 50px 50px;
+    color: #fff;
+  }
+  input{
+    border-radius: 25px;
+    width: 20%;
+    height: 30px;
+    padding: 10px;
+    border-color: black;
+    size: 2px;
+    
+  }

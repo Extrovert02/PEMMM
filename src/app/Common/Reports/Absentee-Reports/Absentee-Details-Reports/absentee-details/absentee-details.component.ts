@@ -11,7 +11,7 @@ import * as ExcelJS from 'exceljs';
 
 import { Workbook } from 'exceljs';
 import { saveAs } from 'file-saver-es';
-import { ReportsService } from 'src/app/Services/Reports-Services/Employee Details Service/Employee-Details-reports.service';
+import { ReportsService } from 'src/app/Services/Reports-Services/Deduction-Reports-Service/Employee Details Service/Employee-Details-reports.service';
 @Component({
   selector: 'app-absentee-details',
   templateUrl: './absentee-details.component.html',
